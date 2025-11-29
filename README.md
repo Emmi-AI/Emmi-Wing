@@ -30,6 +30,10 @@ In case you experience deadlocks when executing this script, you can also execut
 The `inspect_data.py` script also supports setting different datasplits (`all`, `scans`, `scans_reduced`).
 By default it is set to `scans_reduced` which corresponds to the data in the huggingface repo.
 
+The datasplits specified in `datasplits.py` are the ones used for the experiments in the paper and can be reproduced by executing the following command
+
+    python create_splits.py 
+
 ## OpenFOAM Template Setup
 
 The simulation files are located in the `Template` directory. To prepare the case for execution, follow the steps below to import the geometry and configure the flow parameters.
