@@ -1,0 +1,18 @@
+type            surfaceFieldValue;
+libs            ("libfieldFunctionObjects.so");
+
+writeControl    writeTime;
+writeFields     true;
+
+surfaceFormat   raw;
+regionType      patch;
+name            wing;
+
+operation       none;
+
+fields
+(
+    p
+    yPlus
+    wallShearStress
+);
