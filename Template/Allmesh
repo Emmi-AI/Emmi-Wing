@@ -1,0 +1,11 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh
+runApplication surfaceFeatureExtract
+
+runApplication snappyHexMesh -overwrite
+runApplication renumberMesh -overwrite
+runApplication checkMesh
