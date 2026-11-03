@@ -2,10 +2,36 @@ import numpy as np
 from stl import mesh
 
 
+def parse_naca4(digits):
+    """Return (max camber, camber position, thickness) as fractions of chord.
+
+    Accepts the usual designation as a string or int ("0012", "NACA 2412",
+    2412), four single digits ("0", "0", "1", "2"), or a (camber %, camber
+    position in tenths, thickness %) triple such as (2, 4, 12). The last two
+    digits of a 4-digit designation are the thickness, so "0012" is 12% thick.
+    """
+    if isinstance(digits, int):
+        digits = f"{digits:04d}"
+    if isinstance(digits, str):
+        digits = digits.strip().upper()
+        if digits.startswith("NACA"):
+            digits = digits[4:].strip()
+        if len(digits) != 4:
+            raise ValueError(f"Not a NACA 4-digit designation: {digits!r}")
+    if len(digits) == 4:
+        digits = "".join(str(d) for d in digits)
+        if not digits.isdigit():
+            raise ValueError(f"Not a NACA 4-digit designation: {digits!r}")
+        m, p, t = digits[0], digits[1], digits[2:]
+    elif len(digits) == 3:
+        m, p, t = digits
+    else:
+        raise ValueError(f"Not a NACA 4-digit designation: {digits!r}")
+    return int(m) / 100.0, int(p) / 10.0, int(t) / 100.0
+
+
 def naca4_airfoil_points(digits, n_points=100, te_thickness_ratio=1e-4):
-    m = int(digits[0]) / 100.0
-    p = int(digits[1]) / 10.0
-    t = int(digits[2]) / 100.0
+    m, p, t = parse_naca4(digits)
 
     beta = np.linspace(0, np.pi, n_points)
     x = (1 - np.cos(beta)) / 2
